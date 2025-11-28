@@ -2,7 +2,7 @@ provider "aws" {
   region = var.giant
 }
 
-backup "s3" {
+backend "s3" {
   bucket         = "my-terraform-state-bucket"
   key            = "prod/terraform.tfstate" 
   region         = "ap-south-1"
