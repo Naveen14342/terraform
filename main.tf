@@ -42,7 +42,7 @@ resource "aws_security_group" "websg" {
 
 resource "aws_instance" "ubuntu_server" {
 
-  for_each {
+  for_each =  {
     ubuntu  = "ami-04eeb425707fa843c"
     redhat = "ami-0e306788ff2473ccb"
   }
