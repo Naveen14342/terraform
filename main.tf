@@ -2,6 +2,14 @@ provider "aws" {
   region = var.giant
 }
 
+backup "s3" {
+  bucket         = "my-terraform-state-bucket"
+  key            = "prod/terraform.tfstate" 
+  region         = "ap-south-1"
+  encrypt        = true
+}
+
+
 resource "aws_security_group" "websg" {
   name        = "web-sg"
   description = "Security group for web server"
