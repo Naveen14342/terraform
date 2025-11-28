@@ -10,6 +10,49 @@ terraform {
   }
 }
 
+data "aws_ami" "ubuntu_latest" {
+  most_recent = true
+  owners      = ["099720109477"] # Canonical official AWS account
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+# Fetch latest RHEL AMI (Red Hat account ID: 309956199498)
+data "aws_ami" "rhel_latest" {
+  most_recent = true
+  owners      = ["309956199498"] # Red Hat official AWS account
+
+  filter {
+    name   = "name"
+    values = ["RHEL-9*"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+
+
 
 resource "aws_security_group" "websg" {
   name        = "web-sg"
@@ -43,8 +86,10 @@ resource "aws_security_group" "websg" {
 resource "aws_instance" "ubuntu_server" {
 
   for_each =  {
-    ubuntu  = "ami-04eeb425707fa843c"
-    redhat = "ami-0e306788ff2473ccb"
+    ubuntu  = data.aws_ami.ubuntu_latest.id
+
+    redhat = data.aws_ami.rhel_latest.id
+
   }
   ami                    = each.value
   instance_type          = "t2.micro"
