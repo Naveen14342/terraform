@@ -47,7 +47,7 @@ resource "aws_instance" "ubuntu_server" {
     redhat = "ami-0e306788ff2473ccb"
   }
   ami                    = each.value
-  instance_type          = var.size
+  instance_type          = "t2.micro"
   
   vpc_security_group_ids = [aws_security_group.websg.id]
   key_name               = "Redhat_keypair"   # Replace with your actual key pair name
