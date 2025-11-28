@@ -43,6 +43,7 @@ resource "aws_security_group" "websg" {
 resource "aws_instance" "ubuntu_server" {
   ami                    = var.image
   instance_type          = var.size
+  count = 3
   vpc_security_group_ids = [aws_security_group.websg.id]
   key_name               = "Redhat_keypair"   # Replace with your actual key pair name
 
